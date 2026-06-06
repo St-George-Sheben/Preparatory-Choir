@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خورس إعدادي - مارجرجس شبين الكوم</title>
+    <style>
+        :root {
+            --bg-color: #e2f1fc; 
+            --primary-blue: #0284c7; 
+            --dark-blue: #0369a1; 
+            --card-bg: #ffffff; 
+            --text-main: #1e293b; 
+            --text-muted: #0284c7; 
+            --nav-bg: rgba(255, 255, 255, 0.95); 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+       body {
+    background-color: var(--bg-color);
+    position: relative;
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 20px 16px 100px 16px;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+/* الدوائر الهلامية الخلفية المتوهجة */
+body::before, body::after {
+    content: "";
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(3, 105, 161, 0.05) 100%);
+    filter: blur(60px);
+    z-index: -1;
+    animation: auraMove 20s infinite alternate ease-in-out;
+}
+
+body::before { top: -50px; left: -50px; }
+body::after { bottom: 100px; right: -50px; animation-delay: -10s; }
+
+@keyframes auraMove {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(40px, 60px) rotate(45deg); }
+}
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px; 
+        }
+
+        .app-header {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .church-title h1 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+        
+        .church-title p {
+            font-size: 0.9rem;
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+.header-icon {
+    width: 70px;         /* تحديد عرض مناسب للصورة */
+    height: 70px;        /* تحديد ارتفاع مساوٍ للعرض */
+    border-radius: 70%;  /* جعل الصورة دائرية تماماً مثل التصميم المرفق */
+    object-fit: cover;   /* يضمن عدم تشوه الصورة داخل الدائرة */
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15); /* ظل خفيف وأنيق حول اللوجو */
+    flex-shrink: 0;
+}
+
+        .app-section {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .app-section.active-section {
+            display: flex;
+        }
+
+        .interactive-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card-trigger {
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+        }
+
+        .status-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eef7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .card-info {
+            flex-grow: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .card-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .card-info h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .card-dropdown {
+            display: none; 
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .dropdown-inner {
+            padding: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .interactive-card.is-open {
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+
+        .interactive-card.is-open .status-icon {
+            transform: rotate(180deg);
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .interactive-card.is-open .card-dropdown {
+            display: block;
+        }
+
+        .content-media {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 12px;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        /* 🎵 تنسيق مشغل الصوت الاحترافي ليتناسب مع الكارت */
+        .audio-player {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    outline: none;
+    display: block;
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+    transition: box-shadow 0.3s ease;
+}
+
+/* تأثير التوهج عند تمرير الماوس أو أثناء التفاعل */
+.interactive-card.is-open .audio-player {
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);
+    border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+        /* شريط التحكم السفلي - مضاف له تأثير زجاجي شفاف ليبرز الأزرار */
+.bottom-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.4); /* زجاجي شفاف ناعم */
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px; /* مسافة بين الأزرار لتبدو مربعة ومستقلة */
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    z-index: 1000;
+}
+
+/* 🌟 الأزرار المربعة المجسمة 3D (مطابقة لشكل اللعبة المرفوعة) */
+.nav-item {
+    flex: 1;
+    height: 72px; /* تحديد ارتفاع مناسب ليعطي شكلاً مربعاً */
+    max-width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0); /* لون مطفأ للأزرار غير النشطة */
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 20px; /* حواف دائرية ناعمة جداً */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة مرنة مطاطية عند الضغط */
+    position: relative;
+    /* الخدعة السحرية للتجسيم البارز: */
+    box-shadow: 
+        0 6px 12px rgba(59, 130, 246, 0.06), /* ظل سفلي خارجي للمقعد */
+        inset 0 -4px 0 rgba(59, 130, 246, 0.08), /* عمق ثلاثي أبعاد داخلي بالأسفل */
+        inset 0 4px 0 rgba(255, 255, 255, 0.6); /* لمعة زجاجية بيضاء حادة في الأعلى */
+}
+
+/* 🌟 الزر النشط (المضغط عليه حالياً) - توهج نيون أزرق لامع بارز */
+.nav-item.nav-active {
+    color: white;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* تدرج أزرق ناصع ولامع */
+    box-shadow: 
+        0 8px 22px rgba(29, 78, 216, 0.25), /* توهج ملون خارجي */
+        inset 0 -5px 0 rgba(0, 0, 0, 0.18), /* عمق ثلاثي أبعاد داكن بالأسفل ليعطيه ثقلاً */
+        inset 0 4px 6px rgba(255, 255, 255, 0.35); /* لمعة زجاجية قوية ممتدة في الأعلى */
+    transform: translateY(-5px); /* يرتفع للأعلى قليلاً ليظهر أنه بارز ومنفصل عن الباقي */
+}
+
+/* تأثير الضغط الحركي المرن بالإصبع */
+.nav-item:active {
+    transform: translateY(1px);
+}
+
+/* لتنسيق الرمز التعبيري والكتابة ووضعهم في سطرين وراء بعض */
+.nav-item span {
+    display: block;
+    margin-bottom: 2px;
+}
+/* تصميم زر تنزيل اللحن */
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background-color: #e0f2fe; /* أزرق سماوي فاتح مريح */
+    color: var(--dark-blue);
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: -4px; /* لتقريبه من مشغل الصوت */
+    margin-bottom: 14px;
+    border: 1px solid rgba(2, 132, 199, 0.15);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+/* تأثير عند ضغط الزر أو تمرير الماوس */
+.download-btn:shadow, .download-btn:active {
+    background-color: var(--primary-blue);
+    color: white;
+    transform: scale(0.98);
+}
+    </style>
+</head>
+<body>
+<div id="progress-bar" style="position: fixed; top: 0; right: 0; height: 4px; background: var(--dark-blue); width: 0%; z-index: 9999; transition: width 0.1s ease; border-radius: 0 2px 2px 0;"></div>
+    <div class="app-container">
+        
+       <header class="app-header">
+    <div class="church-title">
+        <h1>كنيسة الشهيد العظيم مارجرجس شبين الكوم</h1>
+        <p> خورس إعدادي مستوى تانى 2026</p>
+    </div>
+    
+    <img src="logo.jpg" alt="لوجو الكنيسة" class="header-icon">
+</header>
+
+        <div id="tab-level2" class="app-section active-section">
+            
+            <div class="interactive-card">
+                <div class="card-trigger" onclick="toggleCard(this)">
+                    <div class="status-icon">↓</div>
+                    <div class="card-info">
+                        <span>مستوى ثاني</span>
+                        <h3>لحن البركة : تين اوؤشت</h3>
+                    </div>
+                </div>
+                <div class="card-dropdown">
+    <div class="dropdown-inner">
+        <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+        
+        <audio controls class="audio-player">
+            <source src="Baraka .mp3" type="audio/mpeg">
+        </audio>
+
+        <a href="Baraka .mp3" download="لحن البركة - تين اوؤشت.mp3" class="download-btn">
+            📥 تحميل ملف الصوت (MP3)
+        </a>
+
+        <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات وهزات اللحن:</p>
+        <img src="Baraka .png" alt="لحن البركة" class="content-media">
+    </div>
+</div>
+            </div>
+
+            <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>لبش الهوس الأول سنوى</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Lobsh.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Lobsh.mp3" download="لبش الهوس الأول سنوى.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن (صفحة 1 و 2):</p>
+            
+            <img src="Lobsh 1.png" alt="لبش الهوس الأول - صفحة 1" class="content-media">
+            <img src="Lobsh 2.png" alt="لبش الهوس الأول - صفحة 2" class="content-media" style="margin-top: 10px;">
+            <img src="Lobsh 3.png" alt="لبش الهوس الأول - صفحة 2" class="content-media" style="margin-top: 10px;">   
+        </div>
+    </div>
+</div>
+
+             <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>مرد الإبركسيس لعيدي الصليب</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Ebrakses.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Ebrakses.mp3" download="لبش الهوس الأول سنوى.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
+            
+            <img src="Ebrakses.png" alt="لبش الهوس الأول - صفحة 1" class="content-media">
+      
+        </div>
+    </div>
+</div>
+
+            <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>برلكس لحن البركة</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Mariam .mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Mariam .mp3" download="برلكس لحن البركة.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
+            
+            <img src="Mariam 1.png" alt="لبش الهوس الأول - صفحة 1" class="content-media">
+            <img src="Mariam 2.png" alt="لبش الهوس الأول - صفحة 2" class="content-media" style="margin-top: 10px;">
+            <img src="Mariam 3.png" alt="لبش الهوس الأول - صفحة 2" class="content-media" style="margin-top: 10px;">   
+        </div>
+    </div>
+</div>
+
+             <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>ابصالية الثلاث فتية</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Arebsalen.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Arebsalen.mp3" download="ابصالية الثلاث فتية.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
+            
+            <img src="Arebsalen.png" alt="ابصالية الثلاث فتية - صفحة 1" class="content-media">
+            <img src="Arebsalen 1.png" alt="ابصالية الثلاث فتية - صفحة 2" class="content-media" style="margin-top: 10px;">
+            <img src="Arebsalen 2.png" alt="ابصالية الثلاث فتية - صفحة 3" class="content-media" style="margin-top: 10px;">   
+            <img src="Arebsalen 3.png" alt="ابصالية الثلاث فتية - صفحة 4" class="content-media" style="margin-top: 10px;">  
+            <img src="Arebsalen 4.png" alt="ابصالية الثلاث فتية - صفحة 5" class="content-media" style="margin-top: 10px;">  
+            <img src="Arebsalen 5.png" alt="ابصالية الثلاث فتية - صفحة 6" class="content-media" style="margin-top: 10px;">  
+            <img src="Arebsalen 6.png" alt="ابصالية الثلاث فتية - صفحة 7" class="content-media" style="margin-top: 10px;">  
+            <img src="Arebsalen 7.png" alt="ابصالية الثلاث فتية - صفحة 8" class="content-media" style="margin-top: 10px;">  
+        </div>
+    </div>
+</div>
+
+           <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>الاسبزموس الآدام لعيد القيامة</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Onemnay.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Onemnay.mp3" download="الاسبزموس الآدام لعيد القيامة.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
+            
+            <img src="Onemnay.png" alt="الاسبزموس الآدام لعيد القيامة - صفحة 1" class="content-media">
+      
+        </div>
+    </div>
+</div>
+        </div>
+
+<!-- سطر التوقيع باللغة الإنجليزية -->
+<footer style="text-align: center; padding: 20px 10px; font-size: 0.82rem; color: #64748b; font-weight: 600; margin-bottom: 20px;">
+    Designed and Developed by <span style="color: var(--primary-blue);"> John Wagdy 2026</span>
+</footer>
+
+    <script>
+        function toggleCard(trigger) {
+            const card = trigger.parentElement;
+            const dropdown = card.querySelector('.card-dropdown');
+            
+            document.querySelectorAll('.interactive-card').forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('is-open');
+                    // إيقاف تشغيل أي صوت آخر يعمل تلقائياً عند غلق الكارت
+                    const otherAudio = otherCard.querySelector('audio');
+                    if(otherAudio) otherAudio.pause();
+                }
+            });
+
+            card.classList.toggle('is-open');
+            
+            // إذا أغلق المستخدم الكارت يدوياً نقوم بإيقاف الصوت الخاص به
+            if (!card.classList.contains('is-open')) {
+                const currentAudio = card.querySelector('audio');
+                if(currentAudio) currentAudio.pause();
+            }
+        }
+
+        function switchTab(tabId, navBtn) {
+            document.querySelectorAll('.app-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(tabId).classList.add('active-section');
+
+            if(navBtn) {
+                document.querySelectorAll('.nav-item').forEach(btn => {
+                    btn.classList.remove('nav-active');
+                });
+                navBtn.classList.add('nav-active');
+            }
+            
+            document.querySelectorAll('.interactive-card').forEach(card => {
+                card.classList.remove('is-open');
+                const audio = card.querySelector('audio');
+                if(audio) audio.pause();
+            });
+        }
+window.onscroll = function() {
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+};
+    </script>
+</body>
+</html>
