@@ -476,12 +476,41 @@ body::after { bottom: 100px; right: -50px; animation-delay: -10s; }
     </div>
 </div>
 
+ <div class="interactive-card">
+    <div class="card-trigger" onclick="toggleCard(this)">
+        <div class="status-icon">↓</div>
+        <div class="card-info">
+            <span>مستوى ثاني</span>
+            <h3>الاسبزمس الآدام لعيد القيامة</h3>
+        </div>
+    </div>
+    <div class="card-dropdown">
+        <div class="dropdown-inner">
+            <p style="color: var(--primary-blue); font-weight: 700;">🎵 استمع للحن المرتل:</p>
+            
+            <audio controls class="audio-player">
+                <source src="Adam.mp3" type="audio/mpeg">
+                متصفحك لا يدعم تشغيل ملفات الصوت.
+            </audio>
+
+            <a href="Adam.mp3" download="الاسبزمس الآدام لعيد القيامة.mp3" class="download-btn">
+                📥 تحميل ملف الصوت (MP3)
+            </a>
+
+            <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
+            
+            <img src="Adam.png" alt="الاسبزمس الآدام لعيد القيامة" class="content-media">
+      
+        </div>
+    </div>
+</div>
+        
            <div class="interactive-card">
     <div class="card-trigger" onclick="toggleCard(this)">
         <div class="status-icon">↓</div>
         <div class="card-info">
             <span>مستوى ثاني</span>
-            <h3>الاسبزموس الآدام لعيد القيامة</h3>
+            <h3> لحن اونيم ناي</h3>
         </div>
     </div>
     <div class="card-dropdown">
@@ -493,23 +522,25 @@ body::after { bottom: 100px; right: -50px; animation-delay: -10s; }
                 متصفحك لا يدعم تشغيل ملفات الصوت.
             </audio>
 
-            <a href="Onemnay.mp3" download="الاسبزموس الآدام لعيد القيامة.mp3" class="download-btn">
+            <a href="Onemnay.mp3" download="لحن اونيم ناي.mp3" class="download-btn">
                 📥 تحميل ملف الصوت (MP3)
             </a>
 
             <p style="color: var(--primary-blue); font-weight: 700; margin-top: 10px;">✨ كلمات اللحن  :</p>
             
-            <img src="Onemnay.png" alt="الاسبزموس الآدام لعيد القيامة - صفحة 1" class="content-media">
+            <img src="Onemnay.png" alt="لحن اونيم ناي- صفحة 1" class="content-media">
       
         </div>
     </div>
 </div>
-        </div>
-
-<!-- سطر التوقيع باللغة الإنجليزية -->
-<footer style="text-align: center; padding: 20px 10px; font-size: 0.82rem; color: #64748b; font-weight: 600; margin-bottom: 20px;">
-    Designed and Developed by <span style="color: var(--primary-blue);"> John Wagdy 2026</span>
+        
+<!-- سطر التوقيع المطور مع فصل السنة في سطر جديد -->
+<footer style="text-align: center; padding: 20px 10px; font-size: 0.82rem; color: #64748b; font-weight: 600; margin-bottom: 20px; line-height: 1.6;">
+    Designed and Developed by <br>
+    <span style="color: var(--primary-blue); font-size: 0.9rem;">John Wagdy</span> <br> 
+    2026
 </footer>
+
 
     <script>
         function toggleCard(trigger) {
